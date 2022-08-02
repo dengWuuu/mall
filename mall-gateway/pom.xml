@@ -3,14 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.wu.mall</groupId>
         <artifactId>Guli-mall</artifactId>
+        <groupId>com.wu.mall</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>mall-coupon</artifactId>
+
+    <artifactId>mall-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mall-coupon</name>
-    <description>mall-coupon</description>
+    <name>mall-gateway</name>
+    <description>mall-gateway</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -22,9 +23,11 @@
             <artifactId>mall-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
     </dependencies>
-
-
     <build>
         <plugins>
             <plugin>

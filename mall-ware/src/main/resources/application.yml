@@ -6,6 +6,12 @@ spring:
       url: jdbc:mysql://192.168.136.134:3306/mall_pms
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+  cloud:
+    nacos:
+      server-addr: 81.70.207.243:8848
+  application:
+    name: mall-ware
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:

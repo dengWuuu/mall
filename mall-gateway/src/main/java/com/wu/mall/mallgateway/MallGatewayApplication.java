@@ -1,4 +1,4 @@
-package com.wu.mall;
+package com.wu.mall.mallgateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,12 +7,12 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * @author wu
  */
-@EnableDiscoveryClient
 @SpringBootApplication
-public class MallCouponApplication {
+@EnableDiscoveryClient
+public class MallGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallCouponApplication.class, args);
+        SpringApplication.run(MallGatewayApplication.class, args);
     }
 
 }
