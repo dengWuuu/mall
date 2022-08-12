@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 16:25:18
  */
 @RestController
-@RequestMapping("mall/brand")
+@RequestMapping("product/brand")
 public class BrandController {
     @Autowired
     private BrandService brandService;
@@ -68,7 +68,6 @@ public class BrandController {
      * 修改
      */
     @RequestMapping("/update")
-    //@RequiresPermissions("mall:brand:update")
     public R update(@RequestBody BrandEntity brand){
 		brandService.updateById(brand);
 

@@ -8,6 +8,11 @@ spring:
   cloud:
     nacos:
       server-addr: 81.70.207.243:8848
+    alicloud:
+      access-key: LTAI5tSaSkqBZzuoVc5CgEdq
+      secret-key: znqZiwVsWr9JFBJGxP8CX7PXJn8KOz
+      oss:
+        endpoint: oss-cn-guangzhou.aliyuncs.com
   application:
     name: mall-product
 
@@ -18,6 +23,8 @@ mybatis-plus:
       id-type: auto
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+
 
 server:
   port: 10000

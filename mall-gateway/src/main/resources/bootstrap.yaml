@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 81.70.207.243:8848
+        file-extension: yaml
