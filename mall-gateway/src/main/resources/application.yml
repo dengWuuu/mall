@@ -8,6 +8,13 @@ spring:
       server-addr: 81.70.207.243:8848
     gateway:
       routes:
+        - id: third_party_route
+          uri: lb://mall-third-party
+          predicates:
+            - Path=/api/third-party/**
+          filters:
+            - RewritePath=/api/third-party/(?<segment>.*),/$\{segment}
+
         - id: product_route
           uri: lb://mall-product
           predicates:

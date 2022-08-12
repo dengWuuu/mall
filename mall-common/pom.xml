@@ -96,12 +96,6 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
-            <version>0.9.0.RELEASE</version>
-        </dependency>
-
     </dependencies>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

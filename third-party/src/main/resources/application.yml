@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 81.70.207.243:8848
+    alicloud:
+      access-key: LTAI5tSaSkqBZzuoVc5CgEdq
+      secret-key: znqZiwVsWr9JFBJGxP8CX7PXJn8KOz
+      oss:
+        endpoint: oss-cn-guangzhou.aliyuncs.com
+        bucket: wu-mall
+
+  application:
+    name: mall-third-party
+
+server:
+  port: 30000
