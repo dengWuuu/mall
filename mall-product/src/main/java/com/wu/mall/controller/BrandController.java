@@ -1,27 +1,18 @@
 package com.wu.mall.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.wu.common.utils.PageUtils;
+import com.wu.common.utils.R;
 import com.wu.common.valid.AddGroup;
 import com.wu.common.valid.UpdateGroup;
 import com.wu.common.valid.UpdateStatusGroup;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.wu.mall.entity.BrandEntity;
 import com.wu.mall.service.BrandService;
-import com.wu.common.utils.PageUtils;
-import com.wu.common.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -39,9 +30,8 @@ public class BrandController {
 
     /**
      * 列表
-     */
+```     */
     @RequestMapping("/list")
-    //@RequiresPermissions("mall:brand:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
 

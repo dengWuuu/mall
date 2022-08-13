@@ -20,14 +20,23 @@ public interface CategoryService extends IService<CategoryEntity> {
 
     /**
      * 查出所有分类，组装成树状结构返回
+     *
      * @return
      */
     List<CategoryEntity> listWithTree();
 
     /**
      * 删除分类，如果有孩子则不能删除
+     *
      * @param ids id
      */
     void removeMenueByIds(List<Long> ids);
+
+    /**
+     * 找到一个属性组的三级分类路径
+     * @param catelogId 分类id
+     * @return ids
+     */
+    Long[] findCatelogPath(Long catelogId);
 }
 

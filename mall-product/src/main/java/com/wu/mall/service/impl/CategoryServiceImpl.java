@@ -5,10 +5,7 @@ import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -50,6 +47,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         //TODO 1、检查当前删除的菜单，是否被别的地方引用
         baseMapper.deleteBatchIds(ids);
 
+    }
+
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        List<Long> path = new ArrayList<>();
+        List<Long> parentPath = findParentPath(catelogId, path);
+        Collections.reverse(parentPath);
+        return parentPath.toArray(new Long[0]);
+    }
+
+    private List<Long> findParentPath(Long catelogId, List<Long> path) {
+        path.add(catelogId);
+        CategoryEntity byId = this.getById(catelogId);
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(), path);
+        }
+        return path;
     }
 
     private List<CategoryEntity> getChildren(CategoryEntity root, List<CategoryEntity> all) {
