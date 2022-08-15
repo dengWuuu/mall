@@ -1,5 +1,6 @@
 package com.wu.mall.service.impl;
 
+import com.wu.mall.service.CategoryBrandRelationService;
 import lombok.AllArgsConstructor;
 import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,14 @@ import com.wu.common.utils.Query;
 import com.wu.mall.dao.CategoryDao;
 import com.wu.mall.entity.CategoryEntity;
 import com.wu.mall.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
@@ -55,6 +61,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<Long> parentPath = findParentPath(catelogId, path);
         Collections.reverse(parentPath);
         return parentPath.toArray(new Long[0]);
+    }
+
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+
     }
 
     private List<Long> findParentPath(Long catelogId, List<Long> path) {
