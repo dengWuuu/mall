@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 16:25:18
  */
 @RestController
-@RequestMapping("mall/spuimages")
+@RequestMapping("product/spuimages")
 public class SpuImagesController {
     @Autowired
     private SpuImagesService spuImagesService;

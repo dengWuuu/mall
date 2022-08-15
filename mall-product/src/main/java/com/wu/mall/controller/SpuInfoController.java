@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 16:25:18
  */
 @RestController
-@RequestMapping("mall/spuinfo")
+@RequestMapping("product/spuinfo")
 public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
