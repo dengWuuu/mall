@@ -2,10 +2,13 @@ package com.wu.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
+import com.wu.mall.entity.AttrAttrgroupRelationEntity;
 import com.wu.mall.entity.AttrEntity;
+import com.wu.mall.vo.AttrGroupRelationVo;
 import com.wu.mall.vo.AttrRespVo;
 import com.wu.mall.vo.AttrVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,5 +42,23 @@ public interface AttrService extends IService<AttrEntity> {
     AttrRespVo getAttrInfo(Long attrId);
 
     void updateAttr(AttrVo attr);
+
+    /**
+     * 根据分组id找出其所有分组属性
+     *
+     * @param attrGroupId id
+     * @return 属性
+     */
+    List<AttrEntity> getRelationAttr(Long attrGroupId);
+
+    void deleteRelation(List<AttrAttrgroupRelationEntity> attrGroupRelationVos);
+
+    /**
+     * 找出没有分组的属性
+     * @param attrGroupId
+     * @param params
+     * @return
+     */
+    PageUtils getNoRelationAttr(Long attrGroupId, Map<String, Object> params);
 }
 

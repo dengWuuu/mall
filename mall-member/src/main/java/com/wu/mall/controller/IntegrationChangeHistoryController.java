@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 17:02:59
  */
 @RestController
-@RequestMapping("mall/integrationchangehistory")
+@RequestMapping("member/integrationchangehistory")
 public class IntegrationChangeHistoryController {
     @Autowired
     private IntegrationChangeHistoryService integrationChangeHistoryService;

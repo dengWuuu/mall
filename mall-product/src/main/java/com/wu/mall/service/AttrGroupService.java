@@ -3,7 +3,9 @@ package com.wu.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.AttrGroupEntity;
+import com.wu.mall.vo.AttrGroupWithAttrsVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,5 +26,12 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
      * @return 前端对象
      */
     PageUtils queryPage(Map<String, Object> params, Long catelogId);
+
+    /**
+     * 返回分组和其属性
+     * @param catelogId
+     * @return
+     */
+    List<AttrGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogId);
 }
 

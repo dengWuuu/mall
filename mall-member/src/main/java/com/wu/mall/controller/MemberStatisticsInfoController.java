@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 17:02:59
  */
 @RestController
-@RequestMapping("mall/memberstatisticsinfo")
+@RequestMapping("member/memberstatisticsinfo")
 public class MemberStatisticsInfoController {
     @Autowired
     private MemberStatisticsInfoService memberStatisticsInfoService;

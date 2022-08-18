@@ -2,8 +2,10 @@ package com.wu.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
+import com.wu.mall.entity.BrandEntity;
 import com.wu.mall.entity.CategoryBrandRelationEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,5 +37,12 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
      * @param name
      */
     void updateCategory(Long catId, String name);
+
+    /**
+     * 返回指定分类品牌信息
+     * @param catId
+     * @return
+     */
+    List<BrandEntity> getBrandByCatId(Long catId);
 }
 

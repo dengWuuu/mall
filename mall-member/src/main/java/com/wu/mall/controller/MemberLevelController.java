@@ -18,14 +18,14 @@ import com.wu.common.utils.R;
 
 
 /**
- * ??Ա?ȼ?
+ * 会员等级
  *
  * @author Wu
  * @email dengwu.wu@foxmail.com
  * @date 2022-08-01 17:02:59
  */
 @RestController
-@RequestMapping("mall/memberlevel")
+@RequestMapping("member/memberlevel")
 public class MemberLevelController {
     @Autowired
     private MemberLevelService memberLevelService;

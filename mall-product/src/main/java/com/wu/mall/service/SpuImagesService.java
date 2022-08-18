@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.SpuImagesEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
- * spuͼƬ
+ * spu
  *
  * @author Wu
  * @email dengwu.wu@foxmail.com
@@ -16,5 +17,12 @@ import java.util.Map;
 public interface SpuImagesService extends IService<SpuImagesEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 保存spu的图片信息
+     * @param id
+     * @param images
+     */
+    void saveImages(Long id, List<String> images);
 }
 
