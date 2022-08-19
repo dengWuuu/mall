@@ -25,14 +25,13 @@ import com.wu.common.utils.R;
  * @email dengwu.wu@foxmail.com
  * @date 2022-08-01 16:57:24
  */
-@RestController
 @RequestMapping("mall/coupon")
 @RefreshScope
 public class CouponController {
     @Autowired
     private CouponService couponService;
 
-    @Value("${test.user.name}")
+//    @Value("${test.user.name}")
     private String name;
 
     @RequestMapping("/test")
