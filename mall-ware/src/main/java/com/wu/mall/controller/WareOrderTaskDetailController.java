@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 17:11:33
  */
 @RestController
-@RequestMapping("mall/wareordertaskdetail")
+@RequestMapping("ware/wareordertaskdetail")
 public class WareOrderTaskDetailController {
     @Autowired
     private WareOrderTaskDetailService wareOrderTaskDetailService;

@@ -7,6 +7,7 @@ import com.wu.mall.entity.*;
 import com.wu.mall.feign.CouponFeignService;
 import com.wu.mall.service.*;
 import com.wu.mall.vo.save.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,8 +135,6 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 Long skuId = skuInfoEntity.getSkuId();
 
                 //5.2 sku的图片信息
-                //TODO 没有图片路径的无需保存
-
                 List<SkuImagesEntity> collectSkuImg = sku
                         .getImages().stream().map(img -> {
                             SkuImagesEntity skuImagesEntity = new SkuImagesEntity();
@@ -181,7 +180,43 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
     @Override
     public PageUtils queryPageByCondition(Map<String, Object> params) {
-        return null;
+        QueryWrapper<SpuInfoEntity> wrapper = new QueryWrapper<>();
+
+        String key = (String) params.get("key");
+        if (!StringUtils.isEmpty(key)) {
+            wrapper.and((w) -> {
+                w.eq("id", key).or().like("spu_name", key);
+            });
+        }
+        // status=1 and (id=1 or spu_name like xxx)
+        String status = (String) params.get("status");
+        if (!StringUtils.isEmpty(status)) {
+            wrapper.eq("publish_status", status);
+        }
+
+        String brandId = (String) params.get("brandId");
+        if (!StringUtils.isEmpty(brandId) && !"0".equalsIgnoreCase(brandId)) {
+            wrapper.eq("brand_id", brandId);
+        }
+
+        String catelogId = (String) params.get("catelogId");
+        if (!StringUtils.isEmpty(catelogId) && !"0".equalsIgnoreCase(catelogId)) {
+            wrapper.eq("catalog_id", catelogId);
+        }
+
+        /**
+         * status: 2
+         * key:
+         * brandId: 9
+         * catelogId: 225
+         */
+
+        IPage<SpuInfoEntity> page = this.page(
+                new Query<SpuInfoEntity>().getPage(params),
+                wrapper
+        );
+
+        return new PageUtils(page);
     }
 
 

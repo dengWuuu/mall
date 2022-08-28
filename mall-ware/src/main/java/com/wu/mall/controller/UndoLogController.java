@@ -25,7 +25,7 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 17:11:33
  */
 @RestController
-@RequestMapping("mall/undolog")
+@RequestMapping("ware/undolog")
 public class UndoLogController {
     @Autowired
     private UndoLogService undoLogService;
