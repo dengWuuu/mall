@@ -16,7 +16,7 @@ import com.wu.mall.service.WareInfoService;
 import org.springframework.util.StringUtils;
 
 
-@Service("wareInfoService")
+@Service
 public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity> implements WareInfoService {
 
     @Override

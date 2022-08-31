@@ -3,7 +3,7 @@ spring:
     druid:
       username: root
       password: root
-      url: jdbc:mysql://192.168.136.134:3306/mall_pms
+      url: jdbc:mysql://192.168.136.134:3306/mall_wms
       driver-class-name: com.mysql.cj.jdbc.Driver
 
   cloud:
@@ -11,7 +11,8 @@ spring:
       server-addr: 81.70.207.243:8848
   application:
     name: mall-ware
-
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
@@ -19,6 +20,9 @@ mybatis-plus:
       id-type: auto
       logic-delete-value: 1
       logic-not-delete-value: 0
+logging:
+  level:
+    com.wu.mall: debug
 
 server:
   port: 11000
