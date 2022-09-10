@@ -13,6 +13,10 @@ spring:
       secret-key: znqZiwVsWr9JFBJGxP8CX7PXJn8KOz
       oss:
         endpoint: oss-cn-guangzhou.aliyuncs.com
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
   application:
     name: mall-product
 

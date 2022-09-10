@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: mall-search
+  cloud:
+    nacos:
+      config:
+        server-addr: 81.70.207.243:8848
+        file-extension: yaml

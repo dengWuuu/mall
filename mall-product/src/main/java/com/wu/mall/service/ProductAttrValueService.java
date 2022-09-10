@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * spu??ֵ
+ * spu
  *
  * @author Wu
  * @email dengwu.wu@foxmail.com
@@ -23,5 +23,9 @@ public interface ProductAttrValueService extends IService<ProductAttrValueEntity
      * @param collect
      */
     void saveProductAttr(List<ProductAttrValueEntity> collect);
+
+    List<ProductAttrValueEntity> baseAttrlistforspu(Long spuId);
+
+    void updateSpuAttr(Long spuId, List<ProductAttrValueEntity> entities);
 }
 

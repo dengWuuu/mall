@@ -3,7 +3,7 @@
 
 <mapper namespace="com.wu.mall.dao.AttrDao">
 
-	<!-- 可根据自己的需求，是否要使用 -->
+    <!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="com.wu.mall.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
@@ -15,6 +15,16 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+
+    <select id="selectSearchAttrIds" resultType="java.lang.Long">
+        SELECT attr_id
+        from pms_attr
+        where attr_id IN
+        <foreach collection="attrIds" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        and search_type = 1
+    </select>
 
 
 </mapper>

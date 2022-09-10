@@ -3,7 +3,9 @@ package com.wu.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.SkuInfoEntity;
+import com.wu.mall.entity.SpuInfoEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,5 +22,7 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     void saveSkuInfo(SkuInfoEntity skuInfoEntity);
 
     PageUtils queryPageByCondition(Map<String, Object> params);
+
+    List<SkuInfoEntity> getSkusBySpuId(Long spuId);
 }
 
