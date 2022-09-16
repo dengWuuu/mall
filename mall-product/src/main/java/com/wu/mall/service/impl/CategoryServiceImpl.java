@@ -11,6 +11,7 @@ import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -89,7 +90,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
     }
 
-    //产生堆外内存溢出
+    /**
+     * 获取分类的方法
+     */
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
         String catelogJSON = stringRedisTemplate.opsForValue().get("catelogJSON");
@@ -101,7 +104,44 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         });
     }
 
+
+    /**
+     * Redis分布式锁
+     *
+     * @return
+     */
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDbWithRedisLock() {
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = stringRedisTemplate.opsForValue().setIfAbsent("lock", uuid, 10, TimeUnit.SECONDS);
+        if (Boolean.TRUE.equals(lock)) {
+            //加锁成功
+            log.info("获取分布式锁成功.....................");
+            Map<String, List<Catelog2Vo>> dataFromDb;
+            try {
+                dataFromDb = getDataFromDb();
+            } finally {
+                //删除锁
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                stringRedisTemplate.execute(new DefaultRedisScript<>(script, Long.class), Collections.singletonList("lock"), uuid);
+            }
+            return dataFromDb;
+        } else {
+            //失败
+            log.info("获取分布式锁失败.......................");
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            return getCatalogJsonFromDbWithRedisLock();
+        }
+    }
+
     public synchronized Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
+        return getDataFromDb();
+    }
+
+    private Map<String, List<Catelog2Vo>> getDataFromDb() {
         String catelogJSON = stringRedisTemplate.opsForValue().get("catelogJSON");
         if (!StringUtils.isEmpty(catelogJSON)) {
             return JSON.parseObject(catelogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {
