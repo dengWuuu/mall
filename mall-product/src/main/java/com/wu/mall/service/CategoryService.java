@@ -3,6 +3,7 @@ package com.wu.mall.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.CategoryEntity;
+import com.wu.mall.vo.Catelog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -44,5 +45,9 @@ public interface CategoryService extends IService<CategoryEntity> {
      * @param category
      */
     void updateCascade(CategoryEntity category);
+
+    List<CategoryEntity> getLevelOneCategorys();
+
+    Map<String, List<Catelog2Vo>> getCatalogJson();
 }
 
