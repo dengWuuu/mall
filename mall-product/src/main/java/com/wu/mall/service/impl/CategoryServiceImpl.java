@@ -1,13 +1,20 @@
 package com.wu.mall.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.wu.mall.service.CategoryBrandRelationService;
 import com.wu.mall.vo.Catelog2Vo;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,12 +27,17 @@ import com.wu.mall.dao.CategoryDao;
 import com.wu.mall.entity.CategoryEntity;
 import com.wu.mall.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+@Slf4j
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
     @Autowired
     private CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -77,13 +89,30 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
     }
 
+    //产生堆外内存溢出
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        String catelogJSON = stringRedisTemplate.opsForValue().get("catelogJSON");
+        if (StringUtils.isEmpty(catelogJSON)) {
+            log.info("缓存没有，查询数据库。。。。。。。。。。。。。。。。。。。。。。。。");
+            return getCatalogJsonFromDb();
+        }
+        return JSON.parseObject(catelogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {
+        });
+    }
+
+    public synchronized Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
+        String catelogJSON = stringRedisTemplate.opsForValue().get("catelogJSON");
+        if (!StringUtils.isEmpty(catelogJSON)) {
+            return JSON.parseObject(catelogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {
+            });
+        }
+
         System.out.println("查询了数据库.....");
         List<CategoryEntity> selectList = baseMapper.selectList(null);
         List<CategoryEntity> level1Categorys = getParent_cid(selectList, 0L);
         //2、封装数据
-        return level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+        Map<String, List<Catelog2Vo>> parent_cid = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
             //1、每一个的一级分类，查到这个一级分类的二级分类
             List<CategoryEntity> categoryEntities = getParent_cid(selectList, v.getCatId());
             //2、封装上面面的结果
@@ -105,6 +134,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             }
             return catelog2Vos;
         }));
+        stringRedisTemplate.opsForValue().set("catelogJSON", JSON.toJSONString(parent_cid), 1, TimeUnit.DAYS);
+        return parent_cid;
     }
 
     private List<CategoryEntity> getParent_cid(List<CategoryEntity> selectList, Long parent_cid) {

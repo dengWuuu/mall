@@ -17,6 +17,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   thymeleaf:
     cache: false
+  redis:
+    host: 192.168.136.134
+    port: 6379
   application:
     name: mall-product
 
