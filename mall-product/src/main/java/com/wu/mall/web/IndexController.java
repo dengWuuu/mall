@@ -24,7 +24,7 @@ public class IndexController {
     @GetMapping({"/", "/index.html"})
     public String indexPage(Model model) {
         //TODO 1、查出所有的1级分类
-        List<CategoryEntity> categoryEntities = categoryService.getLevelOneCategorys();
+        List<CategoryEntity> categoryEntities = categoryService.getLevelOneCategories();
         // 视图解析器进行拼串：
         // classpath:/templates/ +返回值+  .html
         model.addAttribute("categorys", categoryEntities);

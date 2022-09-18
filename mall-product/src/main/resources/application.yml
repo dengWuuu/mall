@@ -22,6 +22,12 @@ spring:
     port: 6379
   application:
     name: mall-product
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      use-key-prefix: true
+#    cache-names:
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
