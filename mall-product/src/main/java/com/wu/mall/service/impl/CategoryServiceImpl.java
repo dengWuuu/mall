@@ -52,7 +52,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
                 new Query<CategoryEntity>().getPage(params),
-                new QueryWrapper<CategoryEntity>()
+                new QueryWrapper<>()
         );
 
         return new PageUtils(page);
@@ -88,8 +88,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     @Transactional
 
     @Caching(evict = {
-            @CacheEvict(value = {"category", "product"}, key = "'getLevelOneCategories'"),
-            @CacheEvict(value = {"category", "product"}, key = "'getCatalogJson'")
+            @CacheEvict(value = {"category"}, key = "'getLevelOneCategories'"),
+            @CacheEvict(value = {"category"}, key = "'getCatalogJson'")
     })
     @Override
     public void updateCascade(CategoryEntity category) {
@@ -98,7 +98,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     }
 
-    @Cacheable(value = {"category", "product"}, key = "#root.methodName", sync = true)
+    @Cacheable(value = {"category"}, key = "#root.methodName", sync = true)
     @Override
     public List<CategoryEntity> getLevelOneCategories() {
         return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
@@ -108,7 +108,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      * 获取分类的方法
      */
     @Override
-    @CacheEvict(value = "product", key = "#root.method.name")
+    @Cacheable(value = "category", key = "#root.methodName")
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
         log.info("查询了数据库.....");
         List<CategoryEntity> selectList = baseMapper.selectList(null);

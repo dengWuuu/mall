@@ -92,14 +92,14 @@
             <ul>
                 <li>
                     <a  th:if="${session.loginUser!=null}">欢迎：[[${session.loginUser==null?'':session.loginUser.nickname}]]</a>
-                    <a href="http://auth.gulimall.com/login.html" th:if="${session.loginUser==null}">欢迎，请登录</a>
+                    <a href="http://auth.mall.com/login.html" th:if="${session.loginUser==null}">欢迎，请登录</a>
                 </li>
                 <li>
-                    <a th:if="${session.loginUser==null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+                    <a th:if="${session.loginUser==null}" href="http://auth.mall.com/reg.html" class="li_2">免费注册</a>
                 </li>
                 <span>|</span>
                 <li>
-                    <a href="http://member.gulimall.com/memberOrder.html">我的订单</a>
+                    <a href="http://member.mall.com/memberOrder.html">我的订单</a>
                 </li>
 
 
@@ -117,7 +117,7 @@
         <div class="header_ico">
             <div class="header_gw">
                 <img src="/static/index/img/img_15.png"/>
-                <span><a href="http://cart.gulimall.com/cart.html">我的购物车</a></span>
+                <span><a href="http://cart.mall.com/cart.html">我的购物车</a></span>
                 <span>0</span>
             </div>
             <div class="header_ko">
@@ -584,12 +584,12 @@
 <script type="text/javascript">
     function search() {
         var keyword = $("#searchText").val()
-        window.location.href = "http://search.gulimall.com/list.html?keyword=" + keyword;
+        window.location.href = "http://search.mall.com/list.html?keyword=" + keyword;
     }
     function to_href(skuId){
-     location.href = "http://item.gulimall.com/"+skuId+".html";
+     location.href = "http://item.mall.com/"+skuId+".html";
     }
-    $.get("http://seckill.gulimall.com/currentSeckillSkus",function(resp){
+    $.get("http://seckill.mall.com/currentSeckillSkus",function(resp){
         if(resp.data.length > 0){
             resp.data.forEach(function(item){
 

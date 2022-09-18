@@ -4,6 +4,10 @@ spring:
       server-addr: 81.70.207.243:8848
   application:
     name: mall-search
+  thymeleaf:
+    cache: false
+
+
 
 server:
   port: 12000
