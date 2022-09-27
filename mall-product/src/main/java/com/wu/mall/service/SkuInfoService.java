@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.SkuInfoEntity;
 import com.wu.mall.entity.SpuInfoEntity;
+import com.wu.mall.vo.SkuItemVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * sku?Ϣ
@@ -24,5 +26,7 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     PageUtils queryPageByCondition(Map<String, Object> params);
 
     List<SkuInfoEntity> getSkusBySpuId(Long spuId);
+
+    SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException;
 }
 

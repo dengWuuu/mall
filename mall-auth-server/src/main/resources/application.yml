@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 81.70.207.243:8848
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  application:
+    name: mall-auth-server
+  redis:
+    host: 192.168.136.134
+logging:
+  level:
+    com.wu.mall: debug
+
+server:
+  port: 20000

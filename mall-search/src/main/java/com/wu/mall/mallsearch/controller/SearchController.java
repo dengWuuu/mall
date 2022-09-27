@@ -5,7 +5,10 @@ import com.wu.mall.mallsearch.vo.SearchParam;
 import com.wu.mall.mallsearch.vo.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Wu
@@ -18,8 +21,10 @@ public class SearchController {
 
 
     @GetMapping("/list.html")
-    public String listPage(SearchParam searchParam) {
+    public String listPage(SearchParam searchParam, Model model, HttpServletRequest request) {
+        searchParam.set_queryString(request.getQueryString());
         SearchResult searchResult = mallSearchService.search(searchParam);
+        model.addAttribute("result", searchResult);
         return "list";
     }
 }

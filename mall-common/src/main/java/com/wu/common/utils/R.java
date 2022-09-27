@@ -5,9 +5,7 @@
  * <p>
  * 版权所有，侵权必究！
  */
-
 package com.wu.common.utils;
-
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -18,13 +16,31 @@ import java.util.Map;
 
 /**
  * 返回数据
+ *
+ * @author Mark sunlightcs@gmail.com
  */
 public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    public <T> Object getData(TypeReference<T> typeReference) {
-        Object data = get("data");
-        return JSON.parseObject(JSON.toJSONString(data), typeReference);
+    //利用fastjson进行逆转
+    public <T> T getData(String key, TypeReference<T> typeReference) {
+        Object data = get(key);//默认是map
+        String s = JSON.toJSONString(data);
+        T t = JSON.parseObject(s, typeReference);
+        return t;
+    }
+
+    //利用fastjson进行逆转
+    public <T> T getData(TypeReference<T> typeReference) {
+        Object data = get("data");//默认是map
+        String s = JSON.toJSONString(data);
+        T t = JSON.parseObject(s, typeReference);
+        return t;
+    }
+
+    public R setData(Object data) {
+        put("data", data);
+        return this;
     }
 
     public R() {
@@ -63,13 +79,14 @@ public class R extends HashMap<String, Object> {
         return new R();
     }
 
-    @Override
     public R put(String key, Object value) {
         super.put(key, value);
         return this;
     }
 
     public Integer getCode() {
+
         return (Integer) this.get("code");
     }
+
 }

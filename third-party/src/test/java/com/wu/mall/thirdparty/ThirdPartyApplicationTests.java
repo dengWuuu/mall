@@ -3,8 +3,10 @@ package com.wu.mall.thirdparty;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
+import com.wu.mall.thirdparty.component.SmsComponent;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,9 +20,17 @@ import java.io.InputStream;
 class ThirdPartyApplicationTests {
     @Resource
     OSSClient ossClient;
+    @Autowired
+    SmsComponent smsComponent;
 
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    public void sms() throws Exception {
+        smsComponent.sendMsg("13539804488","1234");
+
     }
 
     @Test

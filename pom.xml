@@ -18,6 +18,7 @@
     </parent>
 
     <modules>
+        <module>mall-auth-server</module>
         <module>mall-coupon</module>
         <module>mall-member</module>
         <module>mall-order</module>

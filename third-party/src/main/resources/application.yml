@@ -9,6 +9,9 @@ spring:
       oss:
         endpoint: oss-cn-guangzhou.aliyuncs.com
         bucket: wu-mall
+      sms:
+        accessKeyId: LTAI5t8ZKqV6hfCuMh6dp3CW
+        accessKeySecret: HJ90WSBV21n9h8SSIeeZdruB7MLoUw
 
   application:
     name: mall-third-party
