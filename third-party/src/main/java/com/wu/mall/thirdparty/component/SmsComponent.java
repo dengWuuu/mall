@@ -1,10 +1,13 @@
 package com.wu.mall.thirdparty.component;
 
+import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.tea.TeaException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * @author Wu
@@ -39,15 +42,19 @@ public class SmsComponent {
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         try {
             // 复制代码运行请自行打印 API 的返回值
-            log.info("发送短信成功");
-            client.sendSmsWithOptions(sendSmsRequest, runtime);
+            SendSmsResponse sendSmsResponse = client.sendSmsWithOptions(sendSmsRequest, runtime);
+            Map<String, Object> stringObjectMap = sendSmsResponse.toMap();
+            log.info("发送消息{}", stringObjectMap.toString());
+            log.info(sendSmsResponse.statusCode.toString());
         } catch (TeaException error) {
             // 如有需要，请打印 error
+            log.error(error.message);
             com.aliyun.teautil.Common.assertAsString(error.message);
         } catch (Exception _error) {
             TeaException error = new TeaException(_error.getMessage(), _error);
             // 如有需要，请打印 error
             com.aliyun.teautil.Common.assertAsString(error.message);
+            log.error(error.message);
         }
     }
 }
