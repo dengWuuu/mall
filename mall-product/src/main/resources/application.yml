@@ -1,4 +1,6 @@
 spring:
+  session:
+    store-type: redis
   datasource:
     druid:
       username: root
