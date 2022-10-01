@@ -21,7 +21,6 @@ public class MallWebConfig implements WebMvcConfigurer {
          *         return "login";
          *     }
          */
-        registry.addViewController("/login.html").setViewName("login");
         //只是get请求能映射
         registry.addViewController("/reg.html").setViewName("reg");
     }

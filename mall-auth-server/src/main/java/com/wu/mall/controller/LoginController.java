@@ -114,6 +114,17 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/login.html")
+    public String loginPage(HttpSession session) {
+        Object attribute = session.getAttribute(AuthServerConstant.LOGIN_USER);
+        if (attribute == null) {
+            //没登录
+            return "login";
+        } else {
+            return "redirect:http://mall.com";
+        }
+    }
+
 
     @PostMapping("/login")
     public String login(UserLoginVo vo, RedirectAttributes redirectAttributes, HttpSession session) {
@@ -124,7 +135,7 @@ public class LoginController {
             MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {
             });
             log.info("用户数据:{}", data.toString());
-            ////成功放到session中
+            //成功放到session中
             session.setAttribute(AuthServerConstant.LOGIN_USER, data);
             return "redirect:http://mall.com";
         } else {

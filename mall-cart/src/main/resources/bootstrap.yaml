@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: mall-cart
+  cloud:
+    nacos:
+      config:
+        server-addr: 81.70.207.243:8848

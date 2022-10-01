@@ -1,0 +1,41 @@
+spring:
+  session:
+    store-type: redis
+  cloud:
+    nacos:
+      server-addr: 81.70.207.243:8848
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.136.134
+    port: 6379
+  application:
+    name: mall-cart
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      use-key-prefix: true
+#    cache-names:
+
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#      logic-delete-value: 1
+#      logic-not-delete-value: 0
+logging:
+  level:
+    com.wu.mall: debug
+
+mall:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10
+
+server:
+  port: 40000

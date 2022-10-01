@@ -3,19 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.wu.mall</groupId>
         <artifactId>Guli-mall</artifactId>
+        <groupId>com.wu.mall</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>mall-auth-server</artifactId>
+    <artifactId>mall-cart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mall-auth-server</name>
-    <description>mall-auth-server</description>
+    <name>mall-cart</name>
+    <description>mall-cart</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
@@ -23,9 +23,8 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>com.wu.mall</groupId>
@@ -48,11 +47,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,7 +60,11 @@
             <optional>true</optional>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
