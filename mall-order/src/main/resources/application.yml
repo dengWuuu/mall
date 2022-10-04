@@ -1,4 +1,19 @@
 spring:
+  session:
+    store-type: redis
+  rabbitmq:
+    host: 81.70.207.243
+    username: root
+    password: Aa1076766987
+    port: 5672
+    virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
   datasource:
     druid:
       username: root
@@ -10,6 +25,11 @@ spring:
       server-addr: 81.70.207.243:8848
   application:
     name: mall-order
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.136.134
+    port: 6379
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
@@ -21,3 +41,9 @@ mybatis-plus:
 
 server:
   port: 9000
+
+mall:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10
