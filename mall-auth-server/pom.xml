@@ -46,6 +46,7 @@
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-boot-starter</artifactId>
                 </exclusion>
+
             </exclusions>
         </dependency>
         <dependency>

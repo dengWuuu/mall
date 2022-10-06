@@ -23,30 +23,29 @@ public class CartInterceptor implements HandlerInterceptor {
 
     /**
      * 目标方法执行之前
+     *
      * @param request
      * @param response
      * @param handler
      * @return
-     * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         UserInfoTo userInfoTo = new UserInfoTo();
 
         HttpSession session = request.getSession();
         MemberRespVo member = (MemberRespVo) session.getAttribute(AuthServerConstant.LOGIN_USER);
-        if(member != null){
+        if (member != null) {
             //用户登录
             userInfoTo.setUserId(member.getId());
         }
 
         Cookie[] cookies = request.getCookies();
-        if(cookies!=null && cookies.length>0){
+        if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
                 //user-key
                 String name = cookie.getName();
-                if(name.equals(CartConstant.TEMP_USER_COOKIE_NAME)){
+                if (name.equals(CartConstant.TEMP_USER_COOKIE_NAME)) {
                     userInfoTo.setUserKey(cookie.getValue());
                     userInfoTo.setTempUser(true);
                 }
@@ -54,7 +53,7 @@ public class CartInterceptor implements HandlerInterceptor {
         }
 
         //如果没有临时用户一定分配一个临时用户
-        if(StringUtils.isEmpty(userInfoTo.getUserKey())){
+        if (StringUtils.isEmpty(userInfoTo.getUserKey())) {
             String uuid = UUID.randomUUID().toString();
             userInfoTo.setUserKey(uuid);
         }
@@ -75,7 +74,7 @@ public class CartInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         UserInfoTo userInfoTo = threadLocal.get();
         //如果没有临时用户一定保存一个临时用户
-        if(!userInfoTo.isTempUser()){
+        if (!userInfoTo.isTempUser()) {
             //持续的延长临时用户的过期时间
             Cookie cookie = new Cookie(CartConstant.TEMP_USER_COOKIE_NAME, userInfoTo.getUserKey());
             cookie.setDomain("mall.com");

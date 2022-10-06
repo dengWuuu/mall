@@ -1,14 +1,11 @@
 package com.wu.mall.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wu.mall.entity.MemberReceiveAddressEntity;
 import com.wu.mall.service.MemberReceiveAddressService;
@@ -25,10 +22,15 @@ import com.wu.common.utils.R;
  * @date 2022-08-01 17:02:59
  */
 @RestController
-@RequestMapping("member/memberreceiveaddress")
+@RequestMapping("/member/memberreceiveaddress")
 public class MemberReceiveAddressController {
     @Autowired
     private MemberReceiveAddressService memberReceiveAddressService;
+
+    @GetMapping("/{memeberId}/addresses")
+    public List<MemberReceiveAddressEntity> getAddress(@PathVariable("memeberId") Long memberId){
+        return memberReceiveAddressService.getAddress(memberId);
+    }
 
     /**
      * 列表

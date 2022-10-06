@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -90,8 +91,7 @@ public class CartServiceImpl implements CartService {
         BoundHashOperations<String, Object, Object> cartOps = getCartOps();
 
         String str = (String) cartOps.get(skuId.toString());
-        CartItem cartItem = JSON.parseObject(str, CartItem.class);
-        return cartItem;
+        return JSON.parseObject(str, CartItem.class);
     }
 
     @Override
@@ -191,29 +191,24 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartItem> getUserCartItems() {
         UserInfoTo userInfoTo = CartInterceptor.threadLocal.get();
+        log.info("购物车用户信息+{}", userInfoTo);
         if (userInfoTo.getUserId() == null) {
             return null;
         } else {
             String cartKey = CART_PREFIX + userInfoTo.getUserId();
             List<CartItem> cartItems = getCartItems(cartKey);
 
+            List<CartItem> collect = new ArrayList<>();
             //获取所有被选中的购物项
-            List<CartItem> collect = cartItems.stream()
-                    .filter(item -> item.getCheck())
-                    .map(item -> {
-                        R price = productFeignService.getPrice(item.getSkuId());
-                        //TODO 1、更新为最新价格
-                        String data = (String) price.get("data");
-                        item.setPrice(new BigDecimal(data));
-                        return item;
-                    })
-                    .collect(Collectors.toList());
-
+            if (cartItems != null) {
+                collect = cartItems.stream().filter(CartItem::getCheck).peek(item -> {
+                    R price = productFeignService.getPrice(item.getSkuId());
+                    //TODO 1、更新为最新价格
+                    String data = (String) price.get("data");
+                    item.setPrice(new BigDecimal(data));
+                }).collect(Collectors.toList());
+            }
             return collect;
         }
-
-
     }
-
-
 }
