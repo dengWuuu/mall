@@ -19,7 +19,6 @@ import lombok.Data;
 @TableName("oms_order")
 public class OrderEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * id
 	 */

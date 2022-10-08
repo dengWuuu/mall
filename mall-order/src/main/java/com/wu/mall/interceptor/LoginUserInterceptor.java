@@ -36,7 +36,7 @@ public class LoginUserInterceptor implements HandlerInterceptor {
         }else {
             //没登录就去登录
             request.getSession().setAttribute("msg","请先进行登录");
-            response.sendRedirect("http://auth.gulimall.com/login.html");
+            response.sendRedirect("http://auth.mall.com/login.html");
             return false;
         }
 
