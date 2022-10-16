@@ -54,8 +54,7 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
     public FareVo getFare(Long addrId) {
         FareVo fareVo = new FareVo();
         R r = memberFeignService.addrInfo(addrId);
-        MemberAddressVo data = r.getData("memberReceiveAddress", new TypeReference<MemberAddressVo>() {
-        });
+        MemberAddressVo data = r.getData("memberReceiveAddress", new TypeReference<MemberAddressVo>() {});
         if (data != null) {
             String phone = data.getPhone();
             //123

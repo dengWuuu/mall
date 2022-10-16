@@ -1,4 +1,17 @@
 spring:
+  rabbitmq:
+    host: 81.70.207.243
+    username: root
+    password: Aa1076766987
+    port: 5672
+    virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
   datasource:
     druid:
       username: root

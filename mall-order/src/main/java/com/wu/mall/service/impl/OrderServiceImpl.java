@@ -3,6 +3,7 @@ package com.wu.mall.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.wu.common.exception.NoStockException;
+import com.wu.common.to.mq.OrderTo;
 import com.wu.common.utils.R;
 import com.wu.common.vo.MemberRespVo;
 import com.wu.mall.constant.OrderConstant;
@@ -19,6 +20,7 @@ import com.wu.mall.to.OrderCreateTo;
 import com.wu.mall.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -124,7 +126,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             //RequestInterceptor interceptor : requestInterceptors
         }, executor).thenRunAsync(() -> {
             List<OrderItemVo> items = confirmVo.getItems();
-            List<Long> collect = items.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
+            List<Long> collect = items.stream().map(OrderItemVo::getSkuId).collect(Collectors.toList());
 
             //TODO 一定要启动库存服务，否则库存查不出。
             R hasStock = wmsFeignService.getSkusHasStock(collect);
@@ -195,7 +197,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             BigDecimal payPrice = vo.getPayPrice();
             if (Math.abs(payAmount.subtract(payPrice).doubleValue()) < 0.01) {
                 //金额对比
-                //....
                 //TODO 3、保存订单
                 saveOrder(order);
                 //4、库存锁定。只要有异常回滚订单数据。
@@ -212,15 +213,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 lockVo.setLocks(locks);
                 //4、远程锁库存
                 //库存成功了，但是网络原因超时了，订单回滚，库存不滚。
-
                 //为了保证高并发。库存服务自己回滚。可以发消息给库存服务；
                 //库存服务本身也可以使用自动解锁模式  消息
+                //是否会有幂等性问题？重试的话?
                 R r = wmsFeignService.orderLockStock(lockVo);
                 if (r.getCode() == 0) {
                     //锁成功了
                     response.setOrder(order.getOrder());
                     //TODO 5、远程扣减积分 出异常
-//                    int i = 10/0; //订单回滚，库存不滚
                     //订单创建成功发送消息给MQ
                     rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", order.getOrder());
                     //TODO 6、清除购物车已经下单的商品
@@ -237,8 +237,59 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
     }
 
+    @Override
+    public OrderEntity getOrderByOrderSn(String orderSn) {
+        return this.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
+    }
+
+    @Override
+    public void closeOrder(OrderEntity entity) {
+        //查询当前这个订单的最新状态
+        OrderEntity orderEntity = this.getById(entity.getId());
+        if (orderEntity.getStatus() == OrderStatusEnum.CREATE_NEW.getCode()) {
+            //关单
+            OrderEntity update = new OrderEntity();
+            update.setId(entity.getId());
+            update.setStatus(OrderStatusEnum.CANCLED.getCode());
+            this.updateById(update);
+            OrderTo orderTo = new OrderTo();
+            BeanUtils.copyProperties(orderEntity, orderTo);
+            //发给MQ一个
+            try {
+                //TODO 保证消息一定会发送出去，每一个消息都可以做好日志记录（给数据库保存每一个消息的详细信息）。
+                //TODO 定期扫描数据库将失败的消息再发送一遍；
+                rabbitTemplate.convertAndSend("order-event-exchange", "order.release.other", orderTo);
+            } catch (Exception e) {
+                //TODO 将没法送成功的消息进行重试发送。
+//                while)
+            }
+
+
+        }
+    }
+
+    @Override
+    public PayVo getOrderPay(String orderSn) {
+        PayVo payVo = new PayVo();
+        OrderEntity order = this.getOrderByOrderSn(orderSn);
+
+
+        BigDecimal bigDecimal = order.getPayAmount().setScale(2, BigDecimal.ROUND_UP);
+        payVo.setTotal_amount(bigDecimal.toString());
+        payVo.setOut_trade_no(order.getOrderSn());
+
+        List<OrderItemEntity> order_sn = orderItemService.list(new QueryWrapper<OrderItemEntity>().eq("order_sn", orderSn));
+        OrderItemEntity entity = order_sn.get(0);
+
+
+        payVo.setSubject(entity.getSkuName());
+        payVo.setBody(entity.getSkuAttrsVals());
+        return payVo;
+    }
+
     /**
      * 计算价格
+     *
      * @param orderEntity
      * @param itemEntities
      */
@@ -274,12 +325,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderEntity.setIntegration(gift.intValue());
         orderEntity.setGrowth(growth.intValue());
         orderEntity.setDeleteStatus(0);//未删除
-
-
     }
 
     /**
      * 创建订单的方法
+     *
      * @return 订单
      */
     private OrderCreateTo createOrder() {
@@ -310,7 +360,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
         OrderSubmitVo submitVo = confirmVoThreadLocal.get();
         //获取收货地址信息
-        R fare = wmsFeignService.getFare(submitVo.getAddrId());
+        R fare = wmsFeignService.getFare(1L);
         FareVo fareResp = fare.getData(new TypeReference<FareVo>() {
         });
 
@@ -356,7 +406,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
      * 构建某一个订单项
      *
      * @param cartItem
-     *
      * @return
      */
     private OrderItemEntity buildOrderItem(OrderItemVo cartItem) {

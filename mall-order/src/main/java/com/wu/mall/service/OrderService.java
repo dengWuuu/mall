@@ -5,6 +5,7 @@ import com.wu.common.utils.PageUtils;
 import com.wu.mall.entity.OrderEntity;
 import com.wu.mall.vo.OrderConfirmVo;
 import com.wu.mall.vo.OrderSubmitVo;
+import com.wu.mall.vo.PayVo;
 import com.wu.mall.vo.SubmitOrderResponseVo;
 
 import java.util.Map;
@@ -24,5 +25,11 @@ public interface OrderService extends IService<OrderEntity> {
     OrderConfirmVo confirmOrder() throws ExecutionException, InterruptedException;
 
     SubmitOrderResponseVo submitOrder(OrderSubmitVo vo);
+
+    OrderEntity getOrderByOrderSn(String orderSn);
+
+    void closeOrder(OrderEntity entity);
+
+    PayVo getOrderPay(String orderSn);
 }
 
