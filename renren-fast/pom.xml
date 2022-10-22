@@ -10,7 +10,7 @@
 
 	<parent>
 		<groupId>com.wu.mall</groupId>
-		<artifactId>Guli-mall</artifactId>
+		<artifactId>Mall</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 

@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.wu.mall</groupId>
-    <artifactId>Guli-mall</artifactId>
+    <artifactId>Mall</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Guli-mall</name>
     <description>电商项目聚合服务</description>
