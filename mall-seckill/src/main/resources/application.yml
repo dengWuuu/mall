@@ -1,0 +1,41 @@
+spring:
+  session:
+    store-type: redis
+  rabbitmq:
+    host: 81.70.207.243
+    username: root
+    password: Aa1076766987
+    port: 5672
+    virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+  cloud:
+    nacos:
+      server-addr: 81.70.207.243:8848
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.136.134
+    port: 6379
+  application:
+    name: mall-product
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      use-key-prefix: true
+logging:
+  level:
+    com.wu.mall: debug
+
+
+
+server:
+  port: 25000

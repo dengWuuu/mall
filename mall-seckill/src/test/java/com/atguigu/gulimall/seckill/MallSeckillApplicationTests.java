@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GulimallSeckillApplicationTests {
+public class MallSeckillApplicationTests {
 
     @Test
     public void contextLoads() {
